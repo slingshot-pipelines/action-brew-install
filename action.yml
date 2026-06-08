@@ -30,3 +30,7 @@ runs:
           brew install "$FORMULA"
           echo "::endgroup::"
         done <<< "$FORMULAS"
+
+branding:
+  icon: arrow-down-circle
+  color: 'blue'
