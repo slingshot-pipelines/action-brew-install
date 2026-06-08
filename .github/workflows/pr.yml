@@ -41,11 +41,23 @@ jobs:
   check-github-workflows:
     needs:
       - detect-changes
-    if: ${{ contains(needs.detect-changes.outputs.changed-component-types, '"github-actions"') }}
-    uses: slingshot-pipelines/workflows/.github/workflows/check-github-actions.yml@check-github-actions/v0
+    if: ${{ contains(needs.detect-changes.outputs.changed-component-types, '"github-workflows"') }}
+    uses: slingshot-pipelines/workflows/.github/workflows/check-github-workflows.yml@check-github-workflows/v0
     strategy:
       matrix:
-        COMPONENT: ${{ fromJSON(needs.detect-changes.outputs.changed-components-by-type).github-actions }}
+        COMPONENT: ${{ fromJSON(needs.detect-changes.outputs.changed-components-by-type).github-workflows }}
+    with:
+      COMPONENT: ${{ matrix.COMPONENT }}
+    secrets: inherit
+
+  check-github-action:
+    needs:
+      - detect-changes
+    if: ${{ contains(needs.detect-changes.outputs.changed-component-types, '"github-action"') }}
+    uses: slingshot-pipelines/workflows/.github/workflows/check-github-action.yml@check-github-action/v0
+    strategy:
+      matrix:
+        COMPONENT: ${{ fromJSON(needs.detect-changes.outputs.changed-components-by-type).github-action }}
     with:
       COMPONENT: ${{ matrix.COMPONENT }}
     secrets: inherit
@@ -55,6 +67,7 @@ jobs:
       - detect-changes
       - check-components
       - check-github-workflows
+      - check-github-action
     runs-on: ubuntu-latest
     if: ${{ always() }}
     steps:
