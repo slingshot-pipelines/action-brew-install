@@ -26,9 +26,11 @@ runs:
       run: |
         # Install formulas
         while IFS= read -r FORMULA || [[ -n "$FORMULA" ]]; do
-          echo "::group::Installing $FORMULA"
-          brew install "$FORMULA"
-          echo "::endgroup::"
+          if [[ -n "$FORMULA" ]]; then
+            echo "::group::Installing $FORMULA"
+            brew install "$FORMULA"
+            echo "::endgroup::"
+          fi
         done <<< "$FORMULAS"
 
 branding:
